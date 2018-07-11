@@ -27,9 +27,20 @@ Copyright © HatioLab Inc. All rights reserved.
 <dom-module id="things-date-picker">
   <template>
     <style>
-      things-input-field::shadow input{
-        @apply(--things-input);
-        width:calc(65% - 37px);
+      :host {
+        --things-input: {
+          width: calc(65% - 37px);
+          margin-bottom: 10px;
+          padding: 3px 5px;
+          -webkit-border-radius: 4px;
+          -moz-border-radius: 4px;
+          border-radius: 4px;
+          border: 1px solid rgba(0, 0, 0, .2);
+          font-size: 15px;
+          font-weight: 300;
+        }
+        --paper-icon-button: {
+        }
       }
       paper-icon-button.clear{
         @apply(--things-small-icon);
@@ -75,7 +86,8 @@ Copyright © HatioLab Inc. All rights reserved.
 
       behaviors: [
         Things.GlobalBehavior,
-        Things.MsgBoxBehavior
+        Things.MsgBoxBehavior,
+        Polymer.IronFormElementBehavior
       ],
 
       properties: {
@@ -200,7 +212,6 @@ Copyright © HatioLab Inc. All rights reserved.
           value: false
         }
       },
-
       /**
        * dateValue 값이 변경되었을 때 ...
        ****
@@ -277,6 +288,9 @@ Copyright © HatioLab Inc. All rights reserved.
       clearField: function() {
         this.changeMode = 'dateValue'
         this.dateValue = null;
+      },
+      validate : function(){
+        return this.$['date-field'].isValid;
       }
     });
   </script>
