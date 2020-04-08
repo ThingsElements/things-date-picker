@@ -188,7 +188,7 @@ Copyright © HatioLab Inc. All rights reserved.
         writeToFormat: {
           type: String,
           notify: true,
-          value: 'YYYY-MM-DD 23:59:59'
+          value: 'YYYY-MM-DD 00:00:00'
         },
 
         /**
@@ -487,7 +487,7 @@ Copyright © HatioLab Inc. All rights reserved.
       _writeToFormatDate: function(date) {
         if(date) {
           var dt = (typeof(date) == 'object') ? moment(date).format(this.writeToFormat) : date;
-          return moment(dt).format(this.writeToFormat);
+          return moment(dt).add(1,'days').format(this.writeToFormat);
         } else {
           return null
         }
