@@ -175,10 +175,20 @@ Copyright © HatioLab Inc. All rights reserved.
          * date의 쓰기전용 format을 설정한다.
          * @type: String
          ******/
-        writeFormat: {
+        writeFromFormat: {
           type: String,
           notify: true,
           value: 'YYYY-MM-DD'
+        },
+
+        /**
+         * date의 쓰기전용 format을 설정한다.
+         * @type: String
+         ******/
+        writeToFormat: {
+          type: String,
+          notify: true,
+          value: 'YYYY-MM-DD 23:59:59'
         },
 
         /**
@@ -463,7 +473,7 @@ Copyright © HatioLab Inc. All rights reserved.
       _readFormatDate: function(date) {
         if(date) {
           var dt = (typeof(date) == 'object') ? moment(date).format(this.readFormat) : date;
-          return moment(dt).locale(this.locale).format(this.readFormat);
+          return moment(dt).format(this.readFormat);
         } else {
           return null
         }
@@ -474,9 +484,24 @@ Copyright © HatioLab Inc. All rights reserved.
        *********
        * @param {Object} date
        */
-      _writeFormatDate: function(date) {
+      _writeToFormatDate: function(date) {
         if(date) {
-          return (typeof(date) == 'object') ? moment(date).format(this.writeFormat) : date;
+          var dt = (typeof(date) == 'object') ? moment(date).format(this.writeToFormat) : date;
+          return moment(dt).format(this.writeToFormat);
+        } else {
+          return null
+        }
+      },
+
+            /**
+       * date를 iso 표준의 string으로 변환 후 locale, writeFormat를 바탕으로 formatting 합니다.
+       *********
+       * @param {Object} date
+       */
+      _writeFromFormatDate: function(date) {
+        if(date) {
+          var dt = (typeof(date) == 'object') ? moment(date).format(this.writeFromFormat) : date;
+          return moment(dt).format(this.writeFromFormat);
         } else {
           return null
         }
@@ -492,17 +517,17 @@ Copyright © HatioLab Inc. All rights reserved.
         var realValue = '';
 
         if(fromDate && toDate) {
-          realValue = this._writeFormatDate(fromDate);
+          realValue = this._writeFromFormatDate(fromDate);
           realValue += ',';
-          realValue += this._writeFormatDate(toDate);
+          realValue += this._writeToFormatDate(toDate);
 
         } else if(fromDate && !toDate) {
-          realValue = this._writeFormatDate(fromDate);
+          realValue = this._writeFromFormatDate(fromDate);
           realValue += ',';
 
         } else if(!fromDate && toDate) {
           realValue = ',';
-          realValue += this._writeFormatDate(toDate);
+          realValue += this._writeToFormatDate(toDate);
 
         } else {
           realValue = '';
